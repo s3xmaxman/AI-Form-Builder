@@ -13,6 +13,8 @@ import { Button } from "@/components/ui/button";
 import { useFormState, useFormStatus } from "react-dom";
 import { generateForm } from "../actions/generateForm";
 import { Textarea } from "@/components/ui/textarea";
+import { useSession, signIn } from "next-auth/react";
+import { Plus } from "lucide-react";
 
 const initialState: {
   message: string;
@@ -33,14 +35,20 @@ export function SubmitButton() {
 const FormGenerator = () => {
   const [open, setOpen] = useState(false);
   const [state, formAction] = useFormState(generateForm, initialState);
+  const session = useSession();
 
   const onFormCreate = () => {
-    setOpen(true);
+    if (session.data?.user) {
+      setOpen(true);
+    } else {
+      signIn();
+    }
   };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <Button onClick={onFormCreate}>
-        {/* <Plus className="w-4 h-4 mr-2" /> */}
+        <Plus className="w-4 h-4 mr-2" />
         Create Form
       </Button>
       <DialogContent className="sm:max-w-[425px]">
