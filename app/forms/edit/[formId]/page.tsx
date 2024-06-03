@@ -3,7 +3,7 @@ import { db } from "@/db";
 import { forms } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { auth } from "@/auth";
-// import Form from '../../Form';
+import Form from "../../Form";
 
 const page = async ({ params }: { params: { formId: string } }) => {
   const formId = params.formId;
@@ -33,7 +33,7 @@ const page = async ({ params }: { params: { formId: string } }) => {
     return <div>Form not found</div>;
   }
 
-  return <div>page</div>;
+  return <Form form={form} editMode />;
 };
 
 export default page;
