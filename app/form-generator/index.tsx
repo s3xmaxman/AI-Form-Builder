@@ -15,6 +15,8 @@ import { generateForm } from "../actions/generateForm";
 import { Textarea } from "@/components/ui/textarea";
 import { useSession, signIn } from "next-auth/react";
 import { Plus } from "lucide-react";
+import { redirect } from "next/navigation";
+import { navigate } from "../actions/navigateToForm";
 
 const initialState: {
   message: string;
@@ -36,6 +38,13 @@ const FormGenerator = () => {
   const [open, setOpen] = useState(false);
   const [state, formAction] = useFormState(generateForm, initialState);
   const session = useSession();
+
+  useEffect(() => {
+    if (state.message === "success") {
+      setOpen(false);
+      navigate(state.data.id);
+    }
+  }, [state.message]);
 
   const onFormCreate = () => {
     if (session.data?.user) {

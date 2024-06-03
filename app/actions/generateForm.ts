@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { saveForm } from "./mutationForm";
 
 export async function generateForm(
   prevState: { message: string },
@@ -51,10 +52,19 @@ export async function generateForm(
 
     const json = await response.json();
 
+    const responseObj = JSON.parse(json.choices[0].message.content);
+
+    const dbFormID = await saveForm({
+      name: responseObj.name,
+      description: responseObj.description,
+      questions: responseObj.questions,
+    });
+
     revalidatePath("/");
+
     return {
       message: "success",
-      data: json,
+      data: { formId: dbFormID },
     };
   } catch (e) {
     console.log(e);
