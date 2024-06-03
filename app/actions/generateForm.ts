@@ -4,9 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 export async function generateForm(
-  prevState: {
-    message: string;
-  },
+  prevState: { message: string },
   formData: FormData
 ) {
   const schema = z.object({
@@ -50,6 +48,7 @@ export async function generateForm(
         ],
       }),
     });
+
     const json = await response.json();
 
     revalidatePath("/");
