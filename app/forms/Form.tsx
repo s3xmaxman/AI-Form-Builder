@@ -15,6 +15,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import FormField from "./FormField";
+import { publishForm } from "../actions/mutationForm";
+import FormPublishSuccess from "./FormPublishSuccess";
 
 type Props = {
   form: Form;
@@ -33,12 +36,22 @@ const Form = (props: Props) => {
   const form = useForm();
   const router = useRouter();
   const { editMode } = props;
+  const [successDialogOpen, setSuccessDialogOpen] = useState(false);
+
+  const handleDialogChange = (open: boolean) => {
+    setSuccessDialogOpen(open);
+  };
 
   const handleSubmit = (data: any) => {
     console.log(data);
   };
 
-  const onSubmit = (data: any) => {};
+  const onSubmit = async (data: any) => {
+    console.log(data);
+    if (editMode) {
+      await publishForm(props.form.id);
+    }
+  };
   return (
     <div className="text-center">
       <h1 className="text-lg font-bold py-3">{props.form.name}</h1>
@@ -61,12 +74,12 @@ const Form = (props: Props) => {
                         {index + 1}. {question.text}
                       </FormLabel>
                       <FormControl>
-                        {/* <FormField
+                        <FormField
                           element={question}
                           key={index}
                           value={field.value}
                           onChange={field.onChange}
-                        /> */}
+                        />
                       </FormControl>
                     </FormItem>
                   )}
@@ -77,11 +90,11 @@ const Form = (props: Props) => {
           <Button type="submit">{editMode ? "Publish" : "Submit"}</Button>
         </form>
       </FormComponent>
-      {/* <FormPublishSuccess
+      <FormPublishSuccess
         formId={props.form.id}
         open={successDialogOpen}
         onOpenChange={handleDialogChange}
-      /> */}
+      />
     </div>
   );
 };

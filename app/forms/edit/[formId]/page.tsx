@@ -33,7 +33,7 @@ const page = async ({ params }: { params: { formId: string } }) => {
     return <div>Form not found</div>;
   }
 
-  return <Form form={form} editMode />;
+  return <Form form={form} editMode={true} />;
 };
 
 export default page;
