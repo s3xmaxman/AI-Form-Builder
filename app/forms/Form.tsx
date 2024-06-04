@@ -42,14 +42,11 @@ const Form = (props: Props) => {
     setSuccessDialogOpen(open);
   };
 
-  const handleSubmit = (data: any) => {
-    console.log(data);
-  };
-
   const onSubmit = async (data: any) => {
     console.log(data);
     if (editMode) {
       await publishForm(props.form.id);
+      setSuccessDialogOpen(true);
     }
   };
   return (
